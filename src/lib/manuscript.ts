@@ -202,9 +202,17 @@ export function revisionSeverityWeight(severity: RevisionTaskSeverity) {
   return 1;
 }
 
+const revisionStatusWeight: Record<RevisionTask["status"], number> = {
+  open: 0,
+  in_progress: 1,
+  done: 2,
+};
+
 export function sortRevisionTasks(tasks: RevisionTask[]) {
   return [...tasks].sort((left, right) => {
-    if (left.status !== right.status) return left.status.localeCompare(right.status);
+    if (left.status !== right.status) {
+      return revisionStatusWeight[left.status] - revisionStatusWeight[right.status];
+    }
     return revisionSeverityWeight(right.severity) - revisionSeverityWeight(left.severity);
   });
 }
