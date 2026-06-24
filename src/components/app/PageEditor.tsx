@@ -52,7 +52,7 @@ export function PageEditor({ pageId, onDelete }: PageEditorProps) {
   if (!page) return null;
 
   return (
-    <div className="px-10 py-10 max-w-3xl mx-auto animate-fade-in-up">
+    <div className="mx-auto max-w-3xl px-4 py-6 animate-fade-in-up sm:px-10 sm:py-10">
       <div className="flex items-center gap-2 mb-6">
         <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold bg-secondary/30 px-2 py-1 rounded">
           {page.section === "front" ? "Front Matter" : "Back Matter"} - {page.kind}
@@ -71,7 +71,7 @@ export function PageEditor({ pageId, onDelete }: PageEditorProps) {
         value={title}
         onChange={(event) => setTitle(event.target.value)}
         onBlur={() => db.bookPages.update(pageId, { title, updatedAt: Date.now() })}
-        className="font-serif text-5xl border-0 px-0 focus-visible:ring-0 shadow-none h-auto py-1 mb-8 bg-transparent tracking-tight"
+        className="mb-8 h-auto border-0 bg-transparent px-0 py-1 font-serif text-4xl tracking-tight shadow-none focus-visible:ring-0 sm:text-5xl"
       />
       <div className="prose-container">
         <EditorContent editor={editor} />

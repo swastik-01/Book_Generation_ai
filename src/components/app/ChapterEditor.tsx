@@ -625,9 +625,9 @@ function ChapterInner({
   }
 
   return (
-    <div className="flex h-full overflow-hidden animate-fade-in-up">
-      <div className="flex-1 min-w-0 flex overflow-hidden">
-        <div className="flex-1 min-w-0 overflow-y-auto px-6 py-10">
+    <div className="flex h-full min-w-0 flex-col overflow-hidden animate-fade-in-up xl:flex-row">
+      <div className="flex min-h-0 flex-1 min-w-0 overflow-hidden">
+        <div className="min-w-0 flex-1 overflow-y-auto px-4 py-6 sm:px-6 sm:py-10">
           <div className="max-w-3xl mx-auto">
             <div className="flex items-center gap-3 mb-6 flex-wrap">
               <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold bg-secondary/30 px-2.5 py-1 rounded-md">
@@ -701,7 +701,7 @@ function ChapterInner({
               onChange={(event) => setTitle(event.target.value)}
               onBlur={saveMeta}
               placeholder="Untitled Chapter"
-              className="font-serif text-5xl border-0 px-0 focus-visible:ring-0 shadow-none h-auto py-1 mb-3 bg-transparent tracking-tight font-semibold"
+              className="mb-3 h-auto border-0 bg-transparent px-0 py-1 font-serif text-4xl font-semibold tracking-tight shadow-none focus-visible:ring-0 sm:text-5xl"
             />
 
             <Textarea

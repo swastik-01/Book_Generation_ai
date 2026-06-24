@@ -381,11 +381,11 @@ function NewBookWizard() {
     }
   }
 
-  if (!settings) return <div className="p-10">Loading...</div>;
+  if (!settings) return <div className="p-6 sm:p-10">Loading...</div>;
 
   return (
-    <div className="px-8 py-10 max-w-4xl mx-auto">
-      <h1 className="font-serif text-5xl">New Book</h1>
+    <div className="mx-auto max-w-4xl px-4 py-6 sm:px-8 sm:py-10">
+      <h1 className="font-serif text-4xl sm:text-5xl">New Book</h1>
       <p className="text-muted-foreground mt-2">
         Tell us the premise. We will outline and write the chapters.
       </p>
@@ -407,7 +407,7 @@ function NewBookWizard() {
         </Card>
       )}
 
-      <Card className="mt-6 p-8">
+      <Card className="mt-6 p-4 sm:p-8">
         {step === 0 && (
           <div className="space-y-5">
             <Field label="Title">
@@ -460,7 +460,7 @@ function NewBookWizard() {
                 placeholder="A retired cartographer is hired to map a city that only appears at dusk..."
               />
             </Field>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               <Field label="Tone">
                 <Input
                   value={draft.tone}
@@ -511,7 +511,7 @@ function NewBookWizard() {
                 placeholder="Sentence-level preferences, banned habits, structural rules."
               />
             </Field>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Themes (comma-separated)">
                 <Input
                   value={(draft.themes || []).join(", ")}
@@ -532,7 +532,7 @@ function NewBookWizard() {
 
         {step === 1 && (
           <div className="space-y-5">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Number of chapters">
                 <Input
                   type="number"
@@ -603,12 +603,13 @@ function NewBookWizard() {
 
         {step === 2 && (
           <div className="space-y-4">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <h3 className="font-serif text-2xl">Characters and World</h3>
               <Button
                 variant="outline"
                 disabled={!providerReady || busy === "chars"}
                 onClick={suggestCharacters}
+                className="w-full sm:w-auto"
               >
                 {busy === "chars" ? (
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -628,8 +629,11 @@ function NewBookWizard() {
             </Field>
             <div className="space-y-2">
               {(draft.characters || []).map((character, index) => (
-                <div key={index} className="flex gap-2 items-start p-3 bg-secondary/50 rounded-md">
-                  <div className="flex-1 grid grid-cols-3 gap-2">
+                <div
+                  key={index}
+                  className="flex flex-col gap-2 rounded-md bg-secondary/50 p-3 sm:flex-row sm:items-start"
+                >
+                  <div className="grid flex-1 grid-cols-1 gap-2 sm:grid-cols-3">
                     <Input
                       value={character.name}
                       onChange={(event) => updateChar(index, { name: event.target.value })}
@@ -649,6 +653,7 @@ function NewBookWizard() {
                   <Button
                     variant="ghost"
                     size="icon"
+                    className="self-end sm:self-auto"
                     onClick={() =>
                       up(
                         "characters",
@@ -679,9 +684,13 @@ function NewBookWizard() {
 
         {step === 3 && (
           <div className="space-y-4">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <h3 className="font-serif text-2xl">Outline</h3>
-              <Button onClick={generateOutline} disabled={!providerReady || busy === "outline"}>
+              <Button
+                onClick={generateOutline}
+                disabled={!providerReady || busy === "outline"}
+                className="w-full sm:w-auto"
+              >
                 {busy === "outline" ? (
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
                 ) : (
@@ -699,8 +708,8 @@ function NewBookWizard() {
             <div className="space-y-3">
               {outline.map((row, index) => (
                 <div key={index} className="p-4 border rounded-md bg-card">
-                  <div className="flex items-center gap-3">
-                    <span className="font-serif text-lg text-muted-foreground w-8">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <span className="w-8 font-serif text-lg text-muted-foreground">
                       {index + 1}.
                     </span>
                     <Input
@@ -714,7 +723,7 @@ function NewBookWizard() {
                       }
                       className="font-serif text-lg"
                     />
-                    <div className="flex items-center gap-1.5 shrink-0">
+                    <div className="flex shrink-0 items-center gap-1.5">
                       <Label className="text-xs text-muted-foreground whitespace-nowrap">
                         Target
                       </Label>
@@ -772,12 +781,12 @@ function NewBookWizard() {
 
         {step === 4 && (
           <div className="space-y-4">
-            <div className="flex justify-between items-center flex-wrap gap-2">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
               <div className="flex items-center gap-2">
                 <FileText className="h-5 w-5 text-primary" />
                 <h3 className="font-serif text-2xl">Review the prompt</h3>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row">
                 {customBrief !== null && (
                   <Button
                     variant="ghost"
@@ -873,14 +882,20 @@ function NewBookWizard() {
           </div>
         )}
 
-        <div className="flex justify-between pt-8 mt-6 border-t">
-          <Button variant="ghost" disabled={step === 0 || !!busy} onClick={() => setStep(step - 1)}>
+        <div className="mt-6 flex flex-col-reverse gap-3 border-t pt-8 sm:flex-row sm:justify-between">
+          <Button
+            variant="ghost"
+            disabled={step === 0 || !!busy}
+            onClick={() => setStep(step - 1)}
+            className="w-full sm:w-auto"
+          >
             <ChevronLeft className="h-4 w-4 mr-1" /> Back
           </Button>
           {step < 5 && (
             <Button
               onClick={() => setStep(step + 1)}
               disabled={(step === 0 && !draft.title) || (step === 3 && !outline.length)}
+              className="w-full sm:w-auto"
             >
               Next <ChevronRight className="h-4 w-4 ml-1" />
             </Button>
@@ -905,7 +920,7 @@ function NewBookWizard() {
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-1.5 min-w-0">
       <Label>{label}</Label>
       {children}
     </div>
@@ -914,26 +929,28 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 function Stepper({ step, steps }: { step: number; steps: string[] }) {
   return (
-    <div className="flex items-center gap-2 mt-8 mb-2 flex-wrap">
-      {steps.map((label, index) => (
-        <div key={label} className="flex items-center gap-2">
-          <div
-            className={`h-7 w-7 rounded-full grid place-items-center text-xs font-medium ${
-              index === step
-                ? "bg-primary text-primary-foreground"
-                : index < step
-                  ? "bg-accent text-accent-foreground"
-                  : "bg-secondary text-muted-foreground"
-            }`}
-          >
-            {index + 1}
+    <div className="-mx-4 mt-8 mb-2 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">
+      <div className="flex min-w-max items-center gap-2">
+        {steps.map((label, index) => (
+          <div key={label} className="flex shrink-0 items-center gap-2">
+            <div
+              className={`grid h-7 w-7 place-items-center rounded-full text-xs font-medium ${
+                index === step
+                  ? "bg-primary text-primary-foreground"
+                  : index < step
+                    ? "bg-accent text-accent-foreground"
+                    : "bg-secondary text-muted-foreground"
+              }`}
+            >
+              {index + 1}
+            </div>
+            <span className={`text-sm ${index === step ? "font-medium" : "text-muted-foreground"}`}>
+              {label}
+            </span>
+            {index < steps.length - 1 && <span className="hidden h-px w-8 bg-border sm:block" />}
           </div>
-          <span className={`text-sm ${index === step ? "font-medium" : "text-muted-foreground"}`}>
-            {label}
-          </span>
-          {index < steps.length - 1 && <span className="w-8 h-px bg-border" />}
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

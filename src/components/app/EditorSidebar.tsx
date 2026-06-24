@@ -78,7 +78,7 @@ export function EditorSidebar({
   return (
     <aside
       className={cn(
-        "h-full shrink-0 border-r bg-sidebar/50 glass flex flex-col overflow-hidden transition-[width] duration-300 ease-in-out group/rail",
+        "hidden h-full shrink-0 flex-col overflow-hidden border-r bg-sidebar/50 transition-[width] duration-300 ease-in-out glass group/rail lg:flex",
         isPinned ? "w-72" : "w-16 hover:w-72 focus-within:w-72",
       )}
     >

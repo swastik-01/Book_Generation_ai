@@ -108,14 +108,14 @@ Book idea: ${idea}`,
   }
 
   return (
-    <div className="px-8 py-10 max-w-6xl mx-auto">
-      <h1 className="font-serif text-5xl">Templates</h1>
+    <div className="mx-auto max-w-6xl px-4 py-6 sm:px-8 sm:py-10">
+      <h1 className="font-serif text-4xl sm:text-5xl">Templates</h1>
       <p className="text-muted-foreground mt-2 max-w-2xl">
         Genre starter packs that pre-fill the wizard with premise, characters, arc, manuscript
         voice, and chapter targets. Pick one and refine it your way.
       </p>
 
-      <Card className="p-5 mt-8 bg-secondary/40 border-primary/20">
+      <Card className="mt-8 border-primary/20 bg-secondary/40 p-4 sm:p-5">
         <div className="flex items-center gap-2 mb-2">
           <Wand2 className="h-4 w-4 text-primary" />
           <h2 className="font-serif text-xl">Generate a custom template</h2>
@@ -123,13 +123,13 @@ Book idea: ${idea}`,
         <p className="text-sm text-muted-foreground mb-3">
           Describe the kind of book you want and AI will draft a reusable starter.
         </p>
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           <Input
             value={idea}
             onChange={(event) => setIdea(event.target.value)}
             placeholder="Example: a noir set in a city built inside a glacier"
           />
-          <Button onClick={generateTemplate} disabled={busy}>
+          <Button className="w-full sm:w-auto" onClick={generateTemplate} disabled={busy}>
             {busy ? (
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
             ) : (

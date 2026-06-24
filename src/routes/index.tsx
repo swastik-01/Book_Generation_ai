@@ -188,18 +188,18 @@ function Library() {
   }
 
   return (
-    <div className="px-8 py-10 max-w-7xl mx-auto relative">
-      <div className="pointer-events-none absolute inset-x-8 top-4 h-44 rounded-3xl bg-gradient-to-r from-primary/10 via-accent/15 to-primary/5 blur-2xl" />
-      <header className="relative flex items-end justify-between mb-12 flex-wrap gap-4 animate-fade-in-up rounded-3xl border border-border/40 bg-card/70 backdrop-blur-md px-6 py-7 shadow-sm">
-        <div>
-          <h1 className="font-serif text-6xl text-foreground tracking-tight leading-none">
+    <div className="relative mx-auto w-full max-w-7xl overflow-hidden px-4 py-6 sm:px-8 sm:py-10">
+      <div className="pointer-events-none absolute inset-x-4 top-4 h-44 rounded-3xl bg-gradient-to-r from-primary/10 via-accent/15 to-primary/5 blur-2xl sm:inset-x-8" />
+      <header className="relative mb-8 flex flex-col gap-5 rounded-2xl border border-border/40 bg-card/70 px-4 py-6 shadow-sm backdrop-blur-md animate-fade-in-up sm:mb-12 sm:rounded-3xl sm:px-6 sm:py-7 lg:flex-row lg:items-end lg:justify-between">
+        <div className="min-w-0">
+          <h1 className="font-serif text-5xl leading-none tracking-tight text-foreground sm:text-6xl">
             Library
           </h1>
-          <p className="text-muted-foreground mt-3 text-lg italic font-serif">
+          <p className="mt-3 font-serif text-base italic text-muted-foreground sm:text-lg">
             "A reader lives a thousand lives before he dies..."
           </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex w-full min-w-0 flex-col gap-3 sm:w-auto sm:flex-row">
           <input
             ref={fileRef}
             type="file"
@@ -214,7 +214,7 @@ function Library() {
           <Button
             variant="outline"
             size="lg"
-            className="glass shadow-sm border-primary/25 hover:border-primary/40"
+            className="glass w-full min-w-0 border-primary/25 text-center shadow-sm hover:border-primary/40 sm:w-auto"
             disabled={importing}
             onClick={() => fileRef.current?.click()}
           >
@@ -225,7 +225,11 @@ function Library() {
             )}
             {importing ? "Importing..." : "Import manuscript"}
           </Button>
-          <Button size="lg" className="shadow-lg shadow-primary/20" asChild>
+          <Button
+            size="lg"
+            className="w-full min-w-0 text-center shadow-lg shadow-primary/20 sm:w-auto"
+            asChild
+          >
             <Link to="/new">
               <Sparkles className="h-4 w-4 mr-2" /> Start new book
             </Link>
@@ -491,19 +495,19 @@ function escapeXml(value: string): string {
 
 function EmptyState() {
   return (
-    <Card className="p-16 text-center border-dashed">
+    <Card className="overflow-hidden border-dashed p-6 text-center sm:p-16">
       <BookOpen className="h-12 w-12 mx-auto text-primary/40" />
-      <h2 className="font-serif text-3xl mt-4">Your shelf is empty</h2>
-      <p className="text-muted-foreground mt-2 max-w-md mx-auto">
+      <h2 className="mt-4 font-serif text-2xl sm:text-3xl">Your shelf is empty</h2>
+      <p className="mx-auto mt-2 max-w-[28rem] px-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
         Generate a complete book from a premise, or import an existing manuscript and edit with AI.
       </p>
-      <div className="mt-6 flex gap-3 justify-center">
-        <Button asChild>
+      <div className="mt-6 flex flex-col justify-center gap-3 px-2 sm:flex-row sm:px-0">
+        <Button className="w-full sm:w-auto" asChild>
           <Link to="/new">
             <Sparkles className="h-4 w-4 mr-2" /> Generate a book
           </Link>
         </Button>
-        <Button variant="outline" asChild>
+        <Button variant="outline" className="w-full sm:w-auto" asChild>
           <Link to="/settings/ai">Configure AI providers</Link>
         </Button>
       </div>

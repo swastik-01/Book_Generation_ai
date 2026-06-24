@@ -86,12 +86,40 @@ async function openAICompatible(
   };
   if (req.maxTokens) body.max_tokens = req.maxTokens;
 
-  const resp = await fetch(url, {
+  let resp = await fetch(url, {
     method: "POST",
     headers,
     body: JSON.stringify(body),
     signal,
   });
+
+  let retryCount = 0;
+  while (!resp.ok && retryCount < 2) {
+    const errorText = await resp.clone().text().catch(() => "");
+    let needsRetry = false;
+
+    if (body.max_tokens && errorText.includes("max_tokens") && errorText.includes("max_completion_tokens")) {
+      delete body.max_tokens;
+      body.max_completion_tokens = req.maxTokens;
+      needsRetry = true;
+    }
+
+    if (body.temperature !== 1 && errorText.includes("temperature") && errorText.includes("default (1) value is supported")) {
+      body.temperature = 1;
+      needsRetry = true;
+    }
+
+    if (!needsRetry) break;
+
+    resp = await fetch(url, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+      signal,
+    });
+    retryCount++;
+  }
+
   if (!resp.ok || !resp.body) {
     const t = await resp.text().catch(() => "");
     throw new Error(`LLM error ${resp.status}: ${t.slice(0, 300)}`);

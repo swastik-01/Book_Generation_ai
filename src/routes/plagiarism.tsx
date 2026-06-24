@@ -128,9 +128,9 @@ function PlagiarismPage() {
   const sorted = useMemo(() => (hits ? [...hits].sort((a, b) => b.score - a.score) : null), [hits]);
 
   return (
-    <div className="px-8 py-10 max-w-5xl mx-auto">
-      <h1 className="font-serif text-5xl flex items-center gap-3">
-        <ShieldCheck className="h-9 w-9 text-primary" /> Plagiarism
+    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-8 sm:py-10">
+      <h1 className="flex items-center gap-3 font-serif text-4xl sm:text-5xl">
+        <ShieldCheck className="h-8 w-8 text-primary sm:h-9 sm:w-9" /> Plagiarism
       </h1>
       <p className="text-muted-foreground mt-2 max-w-2xl">
         Per-paragraph scan against the open web (Google or Bing) or an internal-duplicate check that
@@ -141,9 +141,9 @@ function PlagiarismPage() {
         .
       </p>
 
-      <Card className="mt-8 p-6 space-y-4">
-        <div className="grid sm:grid-cols-3 gap-4">
-          <div>
+      <Card className="mt-8 space-y-4 p-4 sm:p-6">
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div className="min-w-0">
             <Label>Book</Label>
             <Select value={bookId || ""} onValueChange={setBookId}>
               <SelectTrigger>
@@ -158,7 +158,7 @@ function PlagiarismPage() {
               </SelectContent>
             </Select>
           </div>
-          <div>
+          <div className="min-w-0">
             <Label>Scope</Label>
             <Select value={chapterId} onValueChange={setChapterId}>
               <SelectTrigger>
@@ -174,7 +174,7 @@ function PlagiarismPage() {
               </SelectContent>
             </Select>
           </div>
-          <div>
+          <div className="min-w-0">
             <Label>Engine</Label>
             <div className="text-sm h-10 px-3 flex items-center rounded-md border bg-secondary/30 capitalize">
               {plag.engine}
@@ -186,7 +186,7 @@ function PlagiarismPage() {
             </div>
           </div>
         </div>
-        <Button onClick={runCheck} disabled={busy || !bookId}>
+        <Button className="w-full sm:w-auto" onClick={runCheck} disabled={busy || !bookId}>
           {busy ? (
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
           ) : (
@@ -208,7 +208,7 @@ function PlagiarismPage() {
       </Card>
 
       {sorted && sorted.length === 0 && !busy && (
-        <Card className="mt-6 p-8 text-center text-muted-foreground">
+        <Card className="mt-6 p-6 text-center text-muted-foreground sm:p-8">
           No potential matches found. ✓
         </Card>
       )}
@@ -216,8 +216,8 @@ function PlagiarismPage() {
       {sorted && sorted.length > 0 && (
         <div className="mt-6 space-y-3">
           {sorted.map((h, i) => (
-            <Card key={i} className="p-5">
-              <div className="flex items-start gap-3">
+            <Card key={i} className="p-4 sm:p-5">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
                 <div className="shrink-0">
                   <div
                     className={`text-xs font-mono px-2 py-1 rounded ${h.score >= 0.7 ? "bg-destructive text-destructive-foreground" : h.score >= 0.4 ? "bg-amber-500/20 text-amber-700 dark:text-amber-300" : "bg-secondary"}`}
@@ -241,7 +241,7 @@ function PlagiarismPage() {
                       href={h.source}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-xs text-primary inline-flex items-center gap-1 mt-2"
+                      className="mt-2 inline-flex max-w-full items-center gap-1 break-all text-xs text-primary"
                     >
                       <ExternalLink className="h-3 w-3" /> {h.source}
                     </a>
@@ -249,7 +249,7 @@ function PlagiarismPage() {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="mt-3"
+                    className="mt-3 w-full sm:w-auto"
                     disabled={paraphrasing !== null}
                     onClick={() => paraphrase(sorted.indexOf(h))}
                   >

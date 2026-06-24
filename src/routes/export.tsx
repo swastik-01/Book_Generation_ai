@@ -65,21 +65,21 @@ function ExportPage() {
     }
   }
 
-  if (!books) return <div className="p-10">Loading…</div>;
+  if (!books) return <div className="p-6 sm:p-10">Loading…</div>;
 
   return (
-    <div className="px-8 py-10 max-w-5xl mx-auto">
-      <h1 className="font-serif text-5xl flex items-center gap-3">
-        <Download className="h-9 w-9 text-primary" /> Export
+    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-8 sm:py-10">
+      <h1 className="flex items-center gap-3 font-serif text-4xl sm:text-5xl">
+        <Download className="h-8 w-8 text-primary sm:h-9 sm:w-9" /> Export
       </h1>
       <p className="text-muted-foreground mt-2 max-w-2xl">
         Download your book as a PDF, DOCX, EPUB, or single-file HTML. Everything renders in your
         browser — no upload.
       </p>
 
-      <Card className="mt-8 p-6 space-y-4">
-        <div className="grid sm:grid-cols-3 gap-4">
-          <div>
+      <Card className="mt-8 space-y-4 p-4 sm:p-6">
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div className="min-w-0">
             <Label>Book</Label>
             <Select value={bookId || ""} onValueChange={setBookId}>
               <SelectTrigger>
@@ -94,7 +94,7 @@ function ExportPage() {
               </SelectContent>
             </Select>
           </div>
-          <div>
+          <div className="min-w-0">
             <Label>Scope</Label>
             <Select value={scope} onValueChange={(v) => setScope(v as ExportOptions["scope"])}>
               <SelectTrigger>
@@ -108,7 +108,7 @@ function ExportPage() {
               </SelectContent>
             </Select>
           </div>
-          <div>
+          <div className="min-w-0">
             <Label>PDF trim</Label>
             <Select value={trim} onValueChange={(v) => setTrim(v as typeof trim)}>
               <SelectTrigger>
@@ -137,7 +137,7 @@ function ExportPage() {
         )}
       </Card>
 
-      <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <FormatCard
           icon={FileType}
           title="PDF"
@@ -191,7 +191,7 @@ function FormatCard({
   disabled: boolean;
 }) {
   return (
-    <Card className="p-5 flex flex-col">
+    <Card className="flex flex-col p-4 sm:p-5">
       <Icon className="h-6 w-6 text-primary mb-3" />
       <div className="font-serif text-xl">{title}</div>
       <p className="text-xs text-muted-foreground mt-1 flex-1">{desc}</p>

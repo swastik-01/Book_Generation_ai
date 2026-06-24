@@ -26,7 +26,9 @@ function ReadingView() {
   const [sections, setSections] = useState<Section[]>([]);
   const [pages, setPages] = useState<string[]>([]);
   const [pageIdx, setPageIdx] = useState(0);
-  const [doublePage, setDoublePage] = useState(true);
+  const [doublePage, setDoublePage] = useState(() =>
+    typeof window === "undefined" ? true : window.innerWidth >= 900,
+  );
   const [fontSize, setFontSize] = useState(18);
   const [theme, setTheme] = useState<"paper" | "sepia" | "dark">("paper");
   const [flipping, setFlipping] = useState<"next" | "prev" | null>(null);
@@ -39,7 +41,10 @@ function ReadingView() {
   useEffect(() => {
     const handleResize = () => {
       const heightScale = window.innerHeight < 850 ? window.innerHeight / 900 : 1;
-      const widthScale = window.innerWidth < (doublePage ? 1200 : 600) ? window.innerWidth / (doublePage ? 1300 : 700) : 1;
+      const widthScale =
+        window.innerWidth < (doublePage ? 1200 : 600)
+          ? window.innerWidth / (doublePage ? 1300 : 700)
+          : 1;
       setScale(Math.min(heightScale, widthScale));
     };
     handleResize();
@@ -162,7 +167,8 @@ function ReadingView() {
       line-height:1.8; overflow:hidden; visibility:hidden;
       background: white;
     `;
-    measurer.className = "page-content prose prose-serif max-w-none prose-p:mb-4 prose-h1:text-center prose-h1:text-3xl prose-h1:mb-8 prose-h1:font-serif";
+    measurer.className =
+      "page-content prose prose-serif max-w-none prose-p:mb-4 prose-h1:text-center prose-h1:text-3xl prose-h1:mb-8 prose-h1:font-serif";
     document.body.appendChild(measurer);
 
     try {
@@ -193,7 +199,7 @@ function ReadingView() {
               // GIGA-BLOCK: This single element is bigger than a whole page!
               // We must split it. For now, we'll split by sentences or just force it in.
               // A better way: split the text content if it's a P or DIV.
-            if ((blk.tagName === "P" || blk.tagName === "DIV") && s.kind !== "cover") {
+              if ((blk.tagName === "P" || blk.tagName === "DIV") && s.kind !== "cover") {
                 // Better splitting logic: match words OR tags
                 const parts = blk.innerHTML.match(/(<[^>]+>|[^<>\s]+|\s+)/g) || [];
                 let subBuf = "";
@@ -202,14 +208,18 @@ function ReadingView() {
                   measurer.innerHTML = testHtml;
                   if (measurer.scrollHeight > measurer.clientHeight) {
                     if (subBuf) {
-                      out.push(`<${blk.tagName.toLowerCase()}>${subBuf}</${blk.tagName.toLowerCase()}>`);
+                      out.push(
+                        `<${blk.tagName.toLowerCase()}>${subBuf}</${blk.tagName.toLowerCase()}>`,
+                      );
                     }
                     subBuf = part;
                   } else {
                     subBuf += part;
                   }
                 }
-                currentPageHtml = subBuf ? `<${blk.tagName.toLowerCase()}>${subBuf}</${blk.tagName.toLowerCase()}>` : "";
+                currentPageHtml = subBuf
+                  ? `<${blk.tagName.toLowerCase()}>${subBuf}</${blk.tagName.toLowerCase()}>`
+                  : "";
               } else {
                 // For H1, H2, IMG, etc.
                 measurer.innerHTML = currentPageHtml + originalHtml;
@@ -306,7 +316,7 @@ function ReadingView() {
       style={{ backgroundColor: themeStyles.bg, color: themeStyles.ink }}
     >
       <header
-        className="flex items-center gap-3 px-4 py-3 border-b"
+        className="flex flex-wrap items-center gap-2 border-b px-3 py-3 sm:gap-3 sm:px-4"
         style={{ borderColor: "rgba(0,0,0,0.1)" }}
       >
         <Button
@@ -316,11 +326,11 @@ function ReadingView() {
         >
           <ArrowLeft className="h-4 w-4 mr-1" /> Editor
         </Button>
-        <div className="font-serif text-lg truncate flex-1">{bookTitle}</div>
+        <div className="min-w-0 flex-1 truncate font-serif text-base sm:text-lg">{bookTitle}</div>
         <div className="text-xs opacity-70 hidden sm:block">
           {Math.min(pageIdx + 1, totalPages)} / {totalPages}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="hidden items-center gap-2 sm:flex">
           <span className="text-xs opacity-60">A</span>
           <Slider
             value={[fontSize]}
@@ -333,7 +343,7 @@ function ReadingView() {
           <span className="text-base opacity-60">A</span>
         </div>
         <Select value={theme} onValueChange={(v) => setTheme(v as typeof theme)}>
-          <SelectTrigger className="w-24 h-8 text-xs">
+          <SelectTrigger className="h-8 w-24 text-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -342,7 +352,12 @@ function ReadingView() {
             <SelectItem value="dark">Dark</SelectItem>
           </SelectContent>
         </Select>
-        <Button variant="ghost" size="sm" onClick={() => setDoublePage(!doublePage)}>
+        <Button
+          className="hidden sm:inline-flex"
+          variant="ghost"
+          size="sm"
+          onClick={() => setDoublePage(!doublePage)}
+        >
           <BookOpen className="h-4 w-4 mr-1" /> {doublePage ? "Single" : "Double"}
         </Button>
         <Button
@@ -355,12 +370,12 @@ function ReadingView() {
       </header>
 
       <div
-        className="flex-1 flex items-center justify-center p-6 select-none overflow-hidden relative"
+        className="relative flex flex-1 select-none items-center justify-center overflow-hidden p-3 sm:p-6"
         style={{ perspective: "3000px" }}
       >
         <div
           className={`flex items-stretch transition-all duration-700 relative ${flipping ? "scale-[0.98] opacity-90" : "scale-100 opacity-100"}`}
-          style={{ 
+          style={{
             transform: `scale(${scale})`,
             transformOrigin: "center",
           }}
@@ -369,7 +384,7 @@ function ReadingView() {
           {doublePage && (
             <div className="absolute inset-y-0 left-1/2 -ml-[20px] w-[40px] z-20 pointer-events-none bg-gradient-to-r from-transparent via-black/15 to-transparent blur-[2px]" />
           )}
-          
+
           <Page
             html={pages[pageIdx] || ""}
             fontSize={fontSize}
@@ -396,7 +411,7 @@ function ReadingView() {
         </div>
       </div>
 
-      <footer className="flex items-center justify-center gap-4 py-4">
+      <footer className="flex flex-wrap items-center justify-center gap-3 px-3 py-4 sm:gap-4">
         <Button variant="outline" onClick={() => go("prev")} disabled={pageIdx === 0}>
           <ChevronLeft className="h-4 w-4 mr-1" /> Prev
         </Button>

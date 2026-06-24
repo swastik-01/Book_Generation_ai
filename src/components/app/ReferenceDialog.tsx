@@ -107,12 +107,12 @@ export function ReferenceDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-xl glass">
+      <DialogContent className="max-h-[calc(100dvh-2rem)] max-w-[calc(100vw-2rem)] overflow-y-auto glass sm:max-w-xl">
         <DialogHeader>
           <DialogTitle className="font-serif text-2xl">Add Reference</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 py-2">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
                 Reference Type
@@ -148,14 +148,19 @@ export function ReferenceDialog({
             <Label className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
               AI Helper (Paste raw info)
             </Label>
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <Input
                 value={aiQuery}
                 onChange={(e) => setAiQuery(e.target.value)}
                 placeholder="Paste a URL or raw citation text…"
                 className="bg-background/50 border-border/40"
               />
-              <Button size="sm" onClick={generate} disabled={busy || !aiQuery.trim()}>
+              <Button
+                size="sm"
+                className="w-full sm:w-auto"
+                onClick={generate}
+                disabled={busy || !aiQuery.trim()}
+              >
                 {busy ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
@@ -191,11 +196,11 @@ export function ReferenceDialog({
             </div>
           </div>
         </div>
-        <DialogFooter className="mt-4">
+        <DialogFooter className="mt-4 gap-2 sm:gap-0">
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button onClick={save} className="shadow-md px-8">
+          <Button onClick={save} className="px-8 shadow-md">
             Insert Reference
           </Button>
         </DialogFooter>

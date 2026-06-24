@@ -95,7 +95,7 @@ export function AiPanel({
     chapterScenes.find((scene) => scene.id === activeSceneId) || chapterScenes[0] || null;
 
   return (
-    <aside className="w-[24rem] shrink-0 border-l bg-sidebar/30 glass flex flex-col">
+    <aside className="flex max-h-[46vh] w-full shrink-0 flex-col border-t bg-sidebar/30 glass xl:max-h-none xl:w-[24rem] xl:border-l xl:border-t-0">
       <div className="p-4 border-b space-y-3">
         <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
           <Sparkles className={cn("h-3.5 w-3.5 text-primary", busy && "animate-pulse")} />

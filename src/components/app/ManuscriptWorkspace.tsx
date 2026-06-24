@@ -143,7 +143,7 @@ function OutlineWorkspace({
   }, [scenes]);
 
   return (
-    <div className="h-full overflow-y-auto px-6 py-6">
+    <div className="h-full overflow-y-auto px-4 py-5 sm:px-6 sm:py-6">
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           <SummaryCard
@@ -176,7 +176,7 @@ function OutlineWorkspace({
           );
           return (
             <Card key={chapter.id} className="p-5 border-border/60">
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <button
                     onClick={() => onOpenChapter(chapter.id)}
@@ -188,7 +188,7 @@ function OutlineWorkspace({
                     {chapter.actualSummary || chapter.synopsis || "No chapter summary yet."}
                   </p>
                 </div>
-                <div className="text-right text-xs text-muted-foreground">
+                <div className="text-left text-xs text-muted-foreground sm:text-right">
                   <div>{chapterWords.toLocaleString()} scene words</div>
                   <div>{chapterScenes.length} scenes</div>
                 </div>
@@ -275,9 +275,9 @@ function CharacterWorkspace({ bookId }: { bookId: string }) {
   if (!characters) return null;
 
   return (
-    <div className="h-full overflow-y-auto px-6 py-6">
+    <div className="h-full overflow-y-auto px-4 py-5 sm:px-6 sm:py-6">
       <div className="max-w-5xl mx-auto space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="font-serif text-3xl">Character Studio</h2>
             <p className="text-sm text-muted-foreground mt-1">
@@ -285,7 +285,7 @@ function CharacterWorkspace({ bookId }: { bookId: string }) {
               passes.
             </p>
           </div>
-          <Button onClick={() => void addCharacter(bookId)}>
+          <Button className="w-full sm:w-auto" onClick={() => void addCharacter(bookId)}>
             <Plus className="h-4 w-4 mr-2" /> Add character
           </Button>
         </div>
@@ -293,7 +293,7 @@ function CharacterWorkspace({ bookId }: { bookId: string }) {
         {characters.map((character) => (
           <Card key={character.id} className="p-5 space-y-4">
             <div className="flex items-start justify-between gap-3">
-              <div className="flex items-center gap-2">
+              <div className="flex min-w-0 flex-1 items-center gap-2">
                 <UserRound className="h-4 w-4 text-primary" />
                 <Input
                   value={character.name}
@@ -432,7 +432,7 @@ function ResearchWorkspace({
   }, [notes]);
 
   return (
-    <div className="h-full overflow-y-auto px-6 py-6">
+    <div className="h-full overflow-y-auto px-4 py-5 sm:px-6 sm:py-6">
       <div className="max-w-5xl mx-auto space-y-6">
         <div className="grid gap-4 md:grid-cols-3">
           <SummaryCard
@@ -489,6 +489,7 @@ function ResearchWorkspace({
             />
           </Field>
           <Button
+            className="w-full sm:w-auto"
             onClick={async () => {
               if (!title.trim() || !content.trim()) return;
               await db.manuscriptNotes.add(
@@ -562,7 +563,7 @@ function RevisionWorkspace({
   const sortedTasks = useMemo(() => sortRevisionTasks(tasks), [tasks]);
 
   return (
-    <div className="h-full overflow-y-auto px-6 py-6">
+    <div className="h-full overflow-y-auto px-4 py-5 sm:px-6 sm:py-6">
       <div className="max-w-5xl mx-auto space-y-6">
         <div className="grid gap-4 md:grid-cols-3">
           <SummaryCard
@@ -627,6 +628,7 @@ function RevisionWorkspace({
             />
           </Field>
           <Button
+            className="w-full sm:w-auto"
             onClick={async () => {
               if (!title.trim() || !details.trim()) return;
               await db.revisionTasks.add(
@@ -653,7 +655,7 @@ function RevisionWorkspace({
             const chapter = chapters.find((entry) => entry.id === task.chapterId);
             return (
               <Card key={task.id} className="p-4 border-border/60">
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-medium">{task.title}</span>

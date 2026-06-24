@@ -45,7 +45,7 @@ function AISettings() {
     getSettings().then(setS);
   }, []);
 
-  if (!s) return <div className="p-10">Loading…</div>;
+  if (!s) return <div className="p-6 sm:p-10">Loading…</div>;
 
   function update(next: AppSettings) {
     setS(next);
@@ -69,14 +69,14 @@ function AISettings() {
   }
 
   return (
-    <div className="px-8 py-10 max-w-4xl mx-auto">
-      <h1 className="font-serif text-5xl">AI Providers</h1>
+    <div className="mx-auto max-w-4xl px-4 py-6 sm:px-8 sm:py-10">
+      <h1 className="font-serif text-4xl sm:text-5xl">AI Providers</h1>
       <p className="text-muted-foreground mt-2 max-w-2xl">
         Bring your own keys. Everything is stored only in this browser. Calls go directly from your
         browser to the provider you choose.
       </p>
 
-      <Card className="p-5 mt-8">
+      <Card className="mt-8 p-4 sm:p-5">
         <Label>Default provider</Label>
         <p className="text-xs text-muted-foreground mb-3">
           Used by the editor and book generator unless overridden.
@@ -85,7 +85,7 @@ function AISettings() {
           value={s.defaultProvider}
           onValueChange={(v) => update({ ...s, defaultProvider: v as ProviderId })}
         >
-          <SelectTrigger className="w-72">
+          <SelectTrigger className="w-full sm:w-72">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -111,8 +111,8 @@ function AISettings() {
           const p = s.providers[id];
           return (
             <TabsContent key={id} value={id}>
-              <Card className="p-6 space-y-4">
-                <div className="flex items-center justify-between">
+              <Card className="space-y-4 p-4 sm:p-6">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h3 className="font-serif text-2xl">{providerLabel[id]}</h3>
                     {(id === "ollama" || id === "lmstudio") && (
@@ -227,7 +227,7 @@ function AISettings() {
                     ) : (
                       <div className="space-y-1.5">
                         <Label>Image model</Label>
-                        <div className="flex gap-2">
+                        <div className="flex flex-col gap-2 sm:flex-row">
                           <Select
                             value={
                               p.imageModel ||
@@ -240,7 +240,7 @@ function AISettings() {
                               })
                             }
                           >
-                            <SelectTrigger className="w-64">
+                            <SelectTrigger className="w-full sm:w-64">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -292,7 +292,7 @@ function AISettings() {
         })}
       </Tabs>
 
-      <Card className="p-6 mt-8 space-y-3">
+      <Card className="mt-8 space-y-3 p-4 sm:p-6">
         <h3 className="font-serif text-2xl">Plagiarism scanner</h3>
         <p className="text-xs text-muted-foreground">
           The scanner runs in your browser and calls the search API directly using your key. Use the
@@ -374,7 +374,7 @@ function Field({
   placeholder?: string;
 }) {
   return (
-    <div className="space-y-1.5">
+    <div className="min-w-0 space-y-1.5">
       <Label>{label}</Label>
       <Input
         type={type}

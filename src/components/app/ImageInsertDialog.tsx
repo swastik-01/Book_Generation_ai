@@ -96,7 +96,7 @@ export function ImageInsertDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl glass">
+      <DialogContent className="max-h-[calc(100dvh-2rem)] max-w-[calc(100vw-2rem)] overflow-y-auto glass sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle className="font-serif text-2xl">Insert Illustration</DialogTitle>
         </DialogHeader>
@@ -138,8 +138,8 @@ export function ImageInsertDialog({
             </Button>
           </TabsContent>
 
-          <TabsContent value="upload" className="py-8">
-            <div className="border-2 border-dashed border-border/40 rounded-xl p-10 text-center hover:border-primary/40 transition-colors group cursor-pointer relative">
+          <TabsContent value="upload" className="py-6 sm:py-8">
+            <div className="group relative cursor-pointer rounded-xl border-2 border-dashed border-border/40 p-6 text-center transition-colors hover:border-primary/40 sm:p-10">
               <Input
                 type="file"
                 accept="image/*"
@@ -161,7 +161,7 @@ export function ImageInsertDialog({
                 <p className="text-sm text-muted-foreground">Your gallery is empty.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-3 gap-3 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
+              <div className="custom-scrollbar grid max-h-96 grid-cols-2 gap-3 overflow-y-auto pr-2 sm:grid-cols-3">
                 {(gallery || []).map((a: BookAsset) => (
                   <button
                     key={a.id}

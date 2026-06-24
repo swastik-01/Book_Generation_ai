@@ -9,6 +9,13 @@ import { ChapterEditor } from "@/components/app/ChapterEditor";
 import { PageEditor } from "@/components/app/PageEditor";
 import { ManuscriptWorkspace, type WorkspaceTab } from "@/components/app/ManuscriptWorkspace";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { db, getSettings, uid, type AppSettings, type BookPageKind, type Chapter } from "@/lib/db";
 import { buildTocAnalysis, buildTocHtmlFromChapters } from "@/lib/toc";
 import { callLLM } from "@/llm/client";
@@ -297,8 +304,17 @@ function BookEditor() {
     { id: "revision", label: "Revision" },
   ];
 
+  const activeValue = active ? `${active.kind}:${active.id}` : "";
+
+  function selectActiveTarget(value: string) {
+    const [kind, id] = value.split(":") as ["chapter" | "page", string];
+    if (!kind || !id) return;
+    setWorkspaceTab("write");
+    setActive({ kind, id });
+  }
+
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-[calc(100dvh-3.5rem)] overflow-hidden bg-background md:h-screen">
       <EditorSidebar
         book={currentBook}
         chapters={currentChapters}
@@ -316,18 +332,44 @@ function BookEditor() {
         totalTarget={totalTarget}
       />
 
-      <main className="flex-1 min-w-0 overflow-hidden relative border-l border-border/40">
-        <div className="border-b border-border/40 px-5 py-3 flex flex-wrap gap-2">
-          {workspaceTabs.map((tab) => (
-            <Button
-              key={tab.id}
-              variant={workspaceTab === tab.id ? "default" : "outline"}
-              size="sm"
-              onClick={() => setWorkspaceTab(tab.id)}
-            >
-              {tab.label}
-            </Button>
-          ))}
+      <main className="relative min-w-0 flex-1 overflow-hidden border-border/40 lg:border-l">
+        <div className="flex gap-2 overflow-x-auto border-b border-border/40 px-3 py-3 sm:px-5">
+          <div className="min-w-52 shrink-0 lg:hidden">
+            <Select value={activeValue} onValueChange={selectActiveTarget}>
+              <SelectTrigger className="h-8 bg-background/60 text-xs">
+                <SelectValue placeholder="Select chapter or page" />
+              </SelectTrigger>
+              <SelectContent>
+                {currentFrontPages.map((page) => (
+                  <SelectItem key={page.id} value={`page:${page.id}`}>
+                    {page.title}
+                  </SelectItem>
+                ))}
+                {currentChapters.map((chapter) => (
+                  <SelectItem key={chapter.id} value={`chapter:${chapter.id}`}>
+                    {chapter.index + 1}. {chapter.title || "Untitled Chapter"}
+                  </SelectItem>
+                ))}
+                {currentBackPages.map((page) => (
+                  <SelectItem key={page.id} value={`page:${page.id}`}>
+                    {page.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex shrink-0 gap-2">
+            {workspaceTabs.map((tab) => (
+              <Button
+                key={tab.id}
+                variant={workspaceTab === tab.id ? "default" : "outline"}
+                size="sm"
+                onClick={() => setWorkspaceTab(tab.id)}
+              >
+                {tab.label}
+              </Button>
+            ))}
+          </div>
         </div>
 
         <div className="h-[calc(100%-57px)] overflow-hidden">

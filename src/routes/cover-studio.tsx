@@ -57,12 +57,12 @@ function CoverStudio() {
     if (!bookId && books?.length) setBookId(books[0].id);
   }, [books, bookId]);
 
-  if (!books) return <div className="p-10">Loading…</div>;
+  if (!books) return <div className="p-6 sm:p-10">Loading…</div>;
   if (!books.length) {
     return (
-      <div className="px-8 py-10 max-w-3xl mx-auto">
-        <h1 className="font-serif text-5xl">Cover Studio</h1>
-        <Card className="mt-8 p-16 text-center border-dashed">
+      <div className="mx-auto max-w-3xl px-4 py-6 sm:px-8 sm:py-10">
+        <h1 className="font-serif text-4xl sm:text-5xl">Cover Studio</h1>
+        <Card className="mt-8 border-dashed p-6 text-center sm:p-16">
           <ImageIcon className="h-12 w-12 mx-auto text-primary/40" />
           <p className="mt-4 font-serif text-xl">Create a book first</p>
           <p className="text-sm text-muted-foreground mt-2">
@@ -76,18 +76,18 @@ function CoverStudio() {
   const book = books.find((b) => b.id === bookId) || books[0];
 
   return (
-    <div className="px-8 py-10 max-w-6xl mx-auto">
-      <div className="flex items-end justify-between gap-4 flex-wrap">
-        <div>
-          <h1 className="font-serif text-5xl">Cover Studio</h1>
+    <div className="mx-auto max-w-6xl px-4 py-6 sm:px-8 sm:py-10">
+      <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="font-serif text-4xl sm:text-5xl">Cover Studio</h1>
           <p className="text-muted-foreground mt-2">
             Design front, back, and spine covers — by hand or with AI.
           </p>
         </div>
-        <div>
+        <div className="w-full sm:w-auto">
           <Label className="text-xs text-muted-foreground">Book</Label>
           <Select value={book.id} onValueChange={setBookId}>
-            <SelectTrigger className="w-72 mt-1">
+            <SelectTrigger className="mt-1 w-full sm:w-72">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -169,9 +169,13 @@ function FaceEditor({
     await db.books.update(bookId, { authorName: name, updatedAt: Date.now() });
   }
 
-  const palCfg = useCustom
-    ? { id: "__custom", name: "Custom", ...customPalette }
-    : COVER_PALETTES.find((p) => p.id === palette) || COVER_PALETTES[0];
+  const palCfg = useMemo(
+    () =>
+      useCustom
+        ? { id: "__custom", name: "Custom", ...customPalette }
+        : COVER_PALETTES.find((p) => p.id === palette) || COVER_PALETTES[0],
+    [customPalette, palette, useCustom],
+  );
   const svg = useMemo(
     () =>
       renderCoverSvg({
@@ -262,11 +266,15 @@ function FaceEditor({
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 mt-6">
-      <Card className="p-6 flex items-center justify-center bg-secondary/30 min-h-[600px]">
+      <Card className="flex min-h-[360px] items-center justify-center bg-secondary/30 p-4 sm:min-h-[600px] sm:p-6">
         <img
           src={svgDataUrl}
           alt="cover preview"
-          className={face === "spine" ? "h-[600px]" : "max-h-[600px] max-w-full"}
+          className={
+            face === "spine"
+              ? "h-[360px] max-w-full sm:h-[600px]"
+              : "max-h-[360px] max-w-full sm:max-h-[600px]"
+          }
         />
       </Card>
 
@@ -295,7 +303,7 @@ function FaceEditor({
             </div>
             <div>
               <Label>Palette</Label>
-              <div className="grid grid-cols-3 gap-2 mt-1.5 max-h-64 overflow-y-auto pr-1">
+              <div className="mt-1.5 grid max-h-64 grid-cols-2 gap-2 overflow-y-auto pr-1 sm:grid-cols-3">
                 {COVER_PALETTES.map((p) => (
                   <button
                     key={p.id}
@@ -325,7 +333,7 @@ function FaceEditor({
                 </button>
               </div>
               {useCustom && (
-                <div className="grid grid-cols-3 gap-2 mt-2">
+                <div className="mt-2 grid grid-cols-3 gap-2">
                   {(["bg", "accent", "ink"] as const).map((k) => (
                     <div key={k}>
                       <Label className="text-[10px] capitalize">
@@ -431,7 +439,7 @@ function FaceEditor({
             <div className="text-xs uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1.5">
               <Sparkles className="h-3 w-3" /> Saved {face} covers
             </div>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
               {assets.map((a) => (
                 <div key={a.id} className="relative group">
                   <img
